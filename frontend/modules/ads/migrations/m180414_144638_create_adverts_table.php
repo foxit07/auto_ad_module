@@ -14,11 +14,12 @@ class m180414_144638_create_adverts_table extends Migration
     {
         $this->createTable('adverts', [
             'id' => $this->primaryKey(),
-            'id_mark' => $this->integer(),
-            'id_model' => $this->integer(),
-            'mileage' => $this->integer(),
+            'id_car' => $this->integer(),
             'price' => $this->integer(),
             'phone' => $this->string(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(0),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
         ]);
     }
 

@@ -3,18 +3,18 @@
 use yii\db\Migration;
 
 /**
- * Handles the creation of table `adverts_options`.
+ * Handles the creation of table `cars_options`.
  */
-class m180414_150653_create_adverts_options_table extends Migration
+class m180414_150653_create_cars_options_table extends Migration
 {
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->createTable('adverts_options', [
+        $this->createTable('cars_options', [
             'id' => $this->primaryKey(),
-            'id_advert' => $this->integer(),
+            'id_car' => $this->integer(),
             'id_option' => $this->integer(),
         ]);
     }
@@ -24,6 +24,6 @@ class m180414_150653_create_adverts_options_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('adverts_options');
+        $this->dropTable('cars_options');
     }
 }

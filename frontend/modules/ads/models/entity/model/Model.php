@@ -1,8 +1,9 @@
 <?php
 
-namespace frontend\modules\ads\models;
+namespace frontend\modules\ads\models\entity\model;
 
 use Yii;
+use frontend\modules\ads\models\entity\mark\Mark;
 
 /**
  * This is the model class for table "models".
@@ -29,6 +30,7 @@ class Model extends \yii\db\ActiveRecord
         return [
             [['id_mark'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            [['name'], 'required']
         ];
     }
 
@@ -43,4 +45,10 @@ class Model extends \yii\db\ActiveRecord
             'id_mark' => 'Id Mark',
         ];
     }
+    
+    public function getMark()
+    {
+        return $this->hasOne(Mark::classname(), ['id' => 'id_mark']);
+    }
+
 }

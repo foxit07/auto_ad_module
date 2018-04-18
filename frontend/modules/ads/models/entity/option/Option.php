@@ -1,24 +1,23 @@
 <?php
 
-namespace frontend\modules\ads\models;
+namespace frontend\modules\ads\models\entity\option;
 
 use Yii;
 
 /**
- * This is the model class for table "images".
+ * This is the model class for table "options".
  *
  * @property int $id
- * @property string $path
- * @property int $id_advert
+ * @property string $name
  */
-class Image extends \yii\db\ActiveRecord
+class Option extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'images';
+        return 'options';
     }
 
     /**
@@ -27,8 +26,7 @@ class Image extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_advert'], 'integer'],
-            [['path'], 'string', 'max' => 255],
+            [['name'], 'string', 'max' => 255],
         ];
     }
 
@@ -39,8 +37,7 @@ class Image extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'path' => 'Path',
-            'id_advert' => 'Id Advert',
+            'name' => 'Name',
         ];
     }
 }
