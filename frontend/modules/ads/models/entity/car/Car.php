@@ -1,6 +1,9 @@
 <?php
 
 namespace frontend\modules\ads\models\entity\car;
+use frontend\modules\ads\models\entity\option\Option;
+use frontend\modules\ads\models\entity\mark\Mark;
+use frontend\modules\ads\models\entity\model\Model;
 
 use Yii;
 
@@ -45,12 +48,12 @@ class Car extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getMarks()
+    public function getMark()
     {
         return $this->hasOne(Mark::className(),['id' => 'id_mark']);
     }
 
-    public function getModels()
+    public function getModel()
     {
         return $this->hasOne(Model::className(), ['id' => 'id_mark']);
     }
@@ -59,5 +62,13 @@ class Car extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Option::className(), ['id' => 'id_option'])
             ->viaTable('cars_options', ['id_car' => 'id']);
+    }
+
+    public function saveCar($request)
+    {
+        $this->load($request);
+        $this->id_mark = $request['Mark']['name'];
+        $this->id_model = $request['Model']['name'];
+        return $this->save();
     }
 }

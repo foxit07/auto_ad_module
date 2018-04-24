@@ -1,48 +1,10 @@
 <?php
-$params = array_merge(
-    require __DIR__ . '/../../common/config/params.php',
-    require __DIR__ . '/../../common/config/params-local.php',
-    require __DIR__ . '/params.php',
-    require __DIR__ . '/params-local.php'
-);
 
-return [
-    'id' => 'app-backend',
-    'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'backend\controllers',
-    'bootstrap' => ['log'],
-    'modules' => [],
+return[
     'components' => [
-        'request' => [
-            'csrfParam' => '_csrf-backend',
-        ],
-        'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
-        ],
-        'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
-        ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
-
         'urlManager' => [
-            'enablePrettyUrl' => true,
-            'showScriptName' => false,
+            'class' => 'yii\web\UrlManager',
             'rules' => [
-
                 /* index */
                 '/backend/advert' => 'ads/backend/advert/index',
                 '/backend/model' => 'ads/backend/model/index',
@@ -67,9 +29,16 @@ return [
                 '/backend/model/update' => 'ads/backend/model/update',
                 '/backend/mark/update' => 'ads/backend/mark/update',
                 '/backend/option/update' => 'ads/backend/option/update',
+
+
+                /* frontend */
+                '/frontend/advert' => 'ads/frontend/advert/index',
+                '/frontend/store' => 'ads/frontend/advert/store',
+                '/frontend/create' => 'ads/frontend/advert/create',
+                '/frontend/edit' => 'ads/frontend/advert/edit',
+                '/advert/models' => 'ads/frontend/advert/models',
+                '/xxx/rtrtrt' => 'ads/frontend/advert/models',
             ],
         ],
-
     ],
-    'params' => $params,
 ];

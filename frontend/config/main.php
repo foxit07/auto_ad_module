@@ -42,6 +42,17 @@ return [
             'showScriptName' => false,
             'rules' => [
 
+                /* frontend */
+                '/frontend/advert' => 'ads/frontend/advert/index',
+                '/frontend/store' => 'ads/frontend/advert/store',
+                '/frontend/destroy' => 'ads/frontend/advert/destroy',
+                '/frontend/update/<id:\d+>' => 'ads/frontend/advert/update',
+                '/frontend/create' => 'ads/frontend/advert/create',
+                '/frontend/edit/<id:\d+>' => 'ads/frontend/advert/edit',
+
+
+                '/advert/models' => 'ads/frontend/advert/models',
+
             ],
         ],
 

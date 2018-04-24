@@ -5,12 +5,8 @@ namespace frontend\modules\ads\models\entity\advert;
 use Yii;
 use frontend\modules\ads\models\entity\car\Car;
 use frontend\modules\ads\models\entity\image\Image;
-use frontend\modules\ads\models\entity\model\Model;
-use frontend\modules\ads\models\entity\mark\Mark;
-use frontend\modules\ads\models\entity\option\Option;
 use frontend\modules\ads\models\entity\OptionsCar;
-use yii\behaviors\TimestampBehavior;
-use yii\db\Expression;
+use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "adverts".
@@ -64,7 +60,7 @@ class Advert extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getCars()
+    public function getCar()
     {
         return $this->hasOne(Car::className(),['id' => 'id_car']);
     }
@@ -74,33 +70,23 @@ class Advert extends \yii\db\ActiveRecord
         return $this->hasMany(Image::className(),['id_advert' => 'id']);
     }
 
-    public function saveData($request)
+  /*  public function isImage()
     {
-        $car = new Car();
-
-        $car->load($request);
-        $car->id_mark = $request['Mark']['name'];
-        $car->id_model = $request['Model']['name'];
-        $car->save();
-
-        $key = null;
-        $val = null;
-        $a = $car->id;
-
-        $optionsCar = new OptionsCar();
-
-        foreach ($request['Option']['name'] as  $value){
-            $a = function ($value){
-                return $value;
-            };
-            $key[] = $a($value);
-            $val[] = $a($car->id);
-
-            $optionsCar->id_option = $a($value);
-            $optionsCar->id_car = $car->id;
-            $optionsCar->save();
+        if ($this->getImages()){
+            return $this->images[0]->path;
         }
 
+        return null;
+    }*/
+
+    public function saveAdvert($request)
+    {
+        $car = new Car();
+        $carOptions = new OptionsCar();
+        $image = new Image();
+
+        $car->saveCar($request);
+        $carOptions->saveCarOptions($request, $car);
 
         $this->load($request);
         $this->created_at = $t = time();
@@ -108,5 +94,8 @@ class Advert extends \yii\db\ActiveRecord
         $this->id_car = $car->id;
         $this->save();
 
+        $image->saveRelation($this->id);
+
     }
+
 }

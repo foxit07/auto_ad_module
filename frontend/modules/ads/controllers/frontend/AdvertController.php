@@ -2,6 +2,7 @@
 
 namespace frontend\modules\ads\controllers\frontend;
 
+use frontend\modules\ads\models\entity\OptionsCar;
 use Yii;
 use frontend\modules\ads\models\entity\advert\Advert;
 use frontend\modules\ads\models\entity\car\Car;
@@ -9,9 +10,8 @@ use frontend\modules\ads\models\entity\mark\Mark;
 use frontend\modules\ads\models\entity\model\Model;
 use frontend\modules\ads\models\entity\option\Option;
 use yii\helpers\ArrayHelper;
-use frontend\modules\ads\models\entity\advert\AdvertSearch;
+use frontend\modules\ads\models\entity\image\Image;
 use yii\web\Response;
-use yii\helpers\Json;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -40,8 +40,7 @@ class AdvertController extends Controller
     public function actionIndex()
     {
 
-        $adverts = Advert::find()->with('cars')->all();
-
+        $adverts = Advert::find()->with(['car','images'])->all();
         return $this->render('index',[
             'adverts' =>  $adverts,
         ]);
@@ -49,33 +48,77 @@ class AdvertController extends Controller
 
     public function actionCreate()
     {
-
-        if(Yii::$app->request->isPost){
-            $request = Yii::$app->request->post();
-            $this->actionStore($request);
-        }
-
-        $advert = new Advert();
-        $car = new Car();
-        $mark = new Mark; //::find()->all();
-        $model = new Model();
-        $options = new Option();
-
         $itemsOptions = Option::find()->all();
-
         $items = ArrayHelper::map(Mark::find()->all(),'id','name');
         $itemOptions = ArrayHelper::map( $itemsOptions,'id','name');
 
-
         return $this->render('create',[
-            'advert' => $advert,
-            'car' => $car,
+            'advert' => new Advert(),
+            'car' =>  new Car(),
+            'mark' => new Mark(),
+            'model' => new Model(),
+            'options' => new Option(),
+            'image' => new Image(),
             'items' => $items,
-            'mark' => $mark,
-            'model' => $model,
-            'options' => $options,
             'itemOptions' => $itemOptions,
         ]);
+    }
+
+
+    public function actionStore()
+    {
+      $advert = new Advert();
+
+      if(Yii::$app->request->isPost){
+          $request = Yii::$app->request->post();
+          $advert->saveAdvert($request);
+      }
+
+      return $this->redirect('/frontend/advert');
+    }
+
+
+    public function actionEdit($id)
+    {
+
+      /*  $advert = Advert::findOne($id);
+        $items = ArrayHelper::map(Mark::find()->all(),'id','name');
+        $itemOptions = ArrayHelper::map( Option::find()->all(),'id','name');
+        $itemsCarOptions = ArrayHelper::map($advert->car->options,'id','name');
+
+        return $this->render('edit',[
+            'advert' =>  Advert::findOne($id),
+            'car' =>  new Car(),
+            'mark' => new Mark(),
+            'model' => new Model(),
+            'options' => new Option(),
+            'image' => new Image(),
+            'items' => $items,
+            'itemOptions' => $itemOptions,
+            'itemsCarOptions' => $itemsCarOptions,
+        ]);*/
+    }
+
+
+    public function actionUpdate($id)
+    {
+
+    }
+
+
+    public function actionDestroy()
+    {
+        if(Yii::$app->request->isPost){
+            $id = Yii::$app->request->post('id');
+            $advert = Advert::findOne($id);
+            $idCar = $advert->car->id;
+            OptionsCar::deleteAll(['id_car' => $idCar]);
+            Car::findOne($idCar)->delete();
+            Image::deleteAll(['id_advert' => $id]);
+            $advert->delete();
+
+            return $this->redirect('/frontend/advert');
+        }
     }
 
 
@@ -88,41 +131,5 @@ class AdvertController extends Controller
             return $models;
         }
 
-    }
-
-    public function actionStore($request)
-    {
-      $advert = new Advert();
-      $advert->saveData($request);
-
-      return $this->redirect('/frontend/index');
-    }
-
-
-    public function actionEdit($id)
-    {
-
-    }
-
-
-    public function actionUpdate($id)
-    {
-
-    }
-
-
-    public function actionDestoy($id)
-    {
-
-    }
-
-
-    protected function findModel($id)
-    {
-        if (($model = Advert::findOne($id)) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

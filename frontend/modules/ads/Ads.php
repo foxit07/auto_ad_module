@@ -19,7 +19,8 @@ class Ads extends \yii\base\Module
     {
         parent::init();
 
-        // custom initialization code goes here
-        Yii::configure($this, require __DIR__ . '/config.php');
+       Yii::configure($this, require __DIR__ . '/config/config.php');
+     /*  echo '<pre>';
+       print_r(Yii::configure($this, require __DIR__ . '/config/config.php')*/
     }
 }

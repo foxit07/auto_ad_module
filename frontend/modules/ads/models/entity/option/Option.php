@@ -40,4 +40,10 @@ class Option extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    public function getCars()
+    {
+        return $this->hasMany(Car::className(), ['id' => 'id_car'])
+            ->viaTable('cars_options', ['id_option' => 'id']);
+    }
 }
