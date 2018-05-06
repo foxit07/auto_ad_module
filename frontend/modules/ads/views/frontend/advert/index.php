@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 <?php foreach ($adverts as $advert): ?>
 <div class="col-md-12">
     <div class="col-md-3">
-        <a href="#"> <?=$advert->car->mark->name . ' ' . $advert->car->model->name ?> </a>
+        <a href="<?='/frontend/view/' . $advert->id ?>"> <?=$advert->car->mark->name . ' ' . $advert->car->model->name ?> </a>
     </div>
     <div class="col-md-4">
         <?php if($advert->images): ?>

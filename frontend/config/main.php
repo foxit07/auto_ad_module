@@ -42,6 +42,9 @@ return [
             'showScriptName' => false,
             'rules' => [
 
+
+
+                '/frontend/view/<id:\d+>' => 'ads/frontend/advert/view',
                 /* frontend */
                 '/frontend/advert' => 'ads/frontend/advert/index',
                 '/frontend/store' => 'ads/frontend/advert/store',

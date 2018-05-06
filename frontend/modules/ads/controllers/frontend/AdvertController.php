@@ -5,6 +5,7 @@ namespace frontend\modules\ads\controllers\frontend;
 use frontend\modules\ads\models\entity\OptionsCar;
 use Yii;
 use frontend\modules\ads\models\entity\advert\Advert;
+use frontend\modules\ads\components\Storage;
 use frontend\modules\ads\models\entity\car\Car;
 use frontend\modules\ads\models\entity\mark\Mark;
 use frontend\modules\ads\models\entity\model\Model;
@@ -100,16 +101,23 @@ class AdvertController extends Controller
     }
 
 
-    public function actionUpdate($id)
+    /*public function actionUpdate($id)
     {
 
-    }
+    }*/
 
 
     public function actionDestroy()
     {
         if(Yii::$app->request->isPost){
+            $storage = new Storage();
             $id = Yii::$app->request->post('id');
+            $images = Image::findAll(['id_advert' => $id]);
+
+            foreach ($images as $image){
+                $storage->deleteFile($image->path);
+            }
+
             $advert = Advert::findOne($id);
             $idCar = $advert->car->id;
             OptionsCar::deleteAll(['id_car' => $idCar]);
@@ -121,6 +129,19 @@ class AdvertController extends Controller
         }
     }
 
+
+    public function actionView($id)
+    {
+        if(Yii::$app->request->isGet){
+            $images = Image::findAll(['id_advert' => $id]);
+            $advert = Advert::find($id)->all();
+        }
+
+        return $this->render('view',[
+            'images' => $images,
+            'advert' => $advert[0],
+        ]);
+    }
 
     public function actionModels() {
 
